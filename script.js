@@ -1,4 +1,3 @@
-
 let humanScore = 0;
 let computerScore = 0;
 
@@ -16,61 +15,100 @@ if (getComputerChoice == 2) {
     getComputerChoice = "scissor";
 }
 
-let getHumanChoice = prompt('Enter rock, paper, or scissor');
+let getHumanChoice;
 
 let userInputRock = /rock/i;
 let userInputPaper = /paper/i;
 let userInputScissor = /scissor/i;
 
-if (userInputRock.test(getHumanChoice) 
-    || userInputPaper.test(getHumanChoice)
-    || userInputScissor.test(getHumanChoice)) {
-    console.log("You entered" + " " + getHumanChoice.toLowerCase());
-} else if (!userInputRock.test(getHumanChoice) 
-    || !userInputPaper.test(getHumanChoice)
-    || !userInputScissor.test(getHumanChoice)) {
-    alert("Please try again. Must reload the page to play again if an invalid choice was entered. Scores will reset.");
-} else {console.log("You entered" + " " + getHumanChoice.toLowerCase());}
+let humanSelection;
+let computerSelection;
 
-while (!getHumanChoice) {
-    getHumanChoice = prompt('Enter rock, paper, or scissor');
-    if (userInputRock.test(getHumanChoice) 
+let TIE = "It's a TIE!";
+let computerWon = "COMPUTER won!";
+let humanWon = "YOU won!";
+let matches = 1;
+
+let playerIsWinner = "You BEAT Computer!";
+let computerIsWinner = "You LOST to computer!";
+
+let playGame = () => {
+    let getHumanChoice = prompt('Enter rock, paper, or scissor');
+
+    if (userInputRock.test(getHumanChoice)
         || userInputPaper.test(getHumanChoice)
         || userInputScissor.test(getHumanChoice)) {
-        console.log("You entered" + " " + getHumanChoice.toLowerCase());
-    } else if (!userInputRock.test(getHumanChoice) 
+        alert("You entered" + " " + getHumanChoice.toUpperCase());
+        alert("Computer chose" + " " + getComputerChoice.toUpperCase());
+
+    } else if (!userInputRock.test(getHumanChoice)
         || !userInputPaper.test(getHumanChoice)
-        || !userInputScissor.test(getHumanChoice))
-    {
-        alert("Must reload the page to play again if an invalid choice was entered. Scores will reset.");
+        || !userInputScissor.test(getHumanChoice)) {
+        alert("Please try again.");
+        return playGame();
     }
+
+    while (!getHumanChoice) {
+        getHumanChoice = prompt('Enter rock, paper, or scissor');
+        if (userInputRock.test(getHumanChoice)
+            || userInputPaper.test(getHumanChoice)
+            || userInputScissor.test(getHumanChoice)) {
+            alert("You entered" + " " + getHumanChoice.toUpperCase());
+            alert("Computer chose" + " " + getComputerChoice.toUpperCase());
+
+        } else if (!userInputRock.test(getHumanChoice)
+            || !userInputPaper.test(getHumanChoice)
+            || !userInputScissor.test(getHumanChoice)) {
+            alert("Please try again.");
+            return playGame();
+        }
+    }
+
+    humanSelection = getHumanChoice.toLowerCase();
+    computerSelection = getComputerChoice;
+
+    if (humanSelection == "rock" && computerSelection == "rock"
+        || humanSelection == "paper" && computerSelection == "paper"
+        || humanSelection == "scissor" && computerSelection == "scissor"
+    ) {
+        alert(TIE);
+        matches++;
+
+    } else if (humanSelection == "rock" && computerSelection == "paper"
+        || humanSelection == "paper" && computerSelection == "scissor"
+        || humanSelection == "scissor" && computerSelection == "rock"
+    ) {
+        computerScore++;
+        alert(computerWon + " " + "COMPUTER Score: " + computerScore);
+        matches++;
+
+    } else if (humanSelection == "rock" && computerSelection == "scissor"
+        || humanSelection == "paper" && computerSelection == "rock"
+        || humanSelection == "scissor" && computerSelection == "paper"
+    ) {
+        humanScore++;
+        alert(humanWon + " " + "YOUR Score: " + humanScore);
+        matches++;
+    }
+
+    if (matches < 6) {
+        alert("HUMAN: " + humanScore + " " + "COMPUTER: " + computerScore);
+        alert("Round " + matches + " begins");
+        if (matches == 5) {
+        alert("FINAL ROUND");}
+        return playGame();
+    } else if (matches == 6) {
+            if (humanScore > computerScore) {
+                alert(playerIsWinner + " " + "HUMAN: " + humanScore + " " + "COMPUTER:" + " " + computerScore);
+            } else if (humanScore == computerScore) {
+                alert (TIE + " " + "HUMAN: " + humanScore + " " + "COMPUTER:" + " " + computerScore);
+            } else {
+                alert(computerIsWinner + " " + "HUMAN: " + humanScore + " " + "COMPUTER:" + " " + computerScore);
+            }
+        }
 }
 
-const humanSelection = getHumanChoice.toLowerCase();
-const computerSelection = getComputerChoice;
+playGame();
 
-function playRound(humanChoice, computerChoice) {
-    humanChoice = humanSelection;
-    computerChoice = computerSelection;
 
-    let TIE = "It's a TIE!";
-    let computerWon = "Computer Won!";
-    let humanWon = "YOU WON";
 
-    if (humanChoice == "rock" && computerChoice == "rock"
-        || humanChoice == "paper" && computerChoice == "paper"
-        || humanChoice == "scissor" && computerChoice == "scissor"
-    ) {
-        return TIE;
-    } else if (humanChoice == "rock" && computerChoice == "paper"
-        || humanChoice == "paper" && computerChoice == "scissor"
-        || humanChoice == "scissor" && computerChoice == "rock"
-    ) {
-        return computerWon;
-    } else if (humanChoice == "rock" && computerChoice == "scissor"
-        || humanChoice == "paper" && computerChoice == "rock"
-        || humanChoice == "scissor" && computer == "paper"
-    ) {
-        return humanWon;
-    }
-}
